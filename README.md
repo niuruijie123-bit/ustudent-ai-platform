@@ -29,25 +29,31 @@ The system includes:
 
 ## Architecture
 
-```mermaid
-flowchart TD
-    U[User / Browser] --> ALB[Application Load Balancer]
+The platform uses a multi-service cloud architecture:
 
-    ALB --> FE[Frontend<br/>React]
-    ALB --> BE[Backend<br/>Spring Boot]
-    ALB --> AI[AI Service<br/>FastAPI]
+- **User / Browser**
+  → Application Load Balancer
 
-    BE --> DB[(PostgreSQL / Amazon RDS)]
+- **Frontend**
+  → React + Nginx
+  → Runs as an ECS Fargate service
 
-    AI --> RAG[RAG / Handbook Retrieval]
-    AI --> AGENT[Agent / Tool Calling]
-    AGENT --> BE
+- **Backend**
+  → Spring Boot
+  → Runs as an ECS Fargate service
+  → Connects to PostgreSQL on Amazon RDS
 
-    ECR[Amazon ECR] --> FE
-    ECR --> BE
-    ECR --> AI
+- **AI Service**
+  → FastAPI
+  → RAG / handbook retrieval
+  → Agent / tool calling
+  → Communicates with backend APIs
 
-    TF[Terraform] --> AWS[AWS Infrastructure]
+- **Amazon ECR**
+  → Stores Docker images for frontend, backend, and AI services
+
+- **Terraform**
+  → Provisions AWS infrastructure including VPC, ECS, ALB, ECR, and RDS
 
 ---
 
@@ -128,16 +134,13 @@ My hands-on work focused on:
 
 ## Repository Structure
 
-```text
-ustudent-ai-platform/
-├── frontend/          # React frontend
-├── backend/           # Spring Boot backend
-├── ai-service/        # FastAPI, RAG and agent service
-├── infrastructure/    # Terraform AWS infrastructure
-├── docs/
-│   └── screenshots/
-├── README.md
-└── .gitignore
+- `frontend/` — React frontend
+- `backend/` — Spring Boot backend
+- `ai-service/` — FastAPI, RAG, and agent service
+- `infrastructure/` — Terraform AWS infrastructure
+- `docs/screenshots/` — Demo and deployment screenshots
+- `README.md` — Portfolio documentation
+- `.gitignore` — Local and sensitive-file exclusions
 
 ---
 
