@@ -239,7 +239,17 @@ Example configuration files are used instead of real credentials.
 
 ## Demo
 
-Deployment screenshots and a short demo will be added later.
+### AI Chat
+
+![AI Chat](docs/screenshots/ai-chat.png)
+
+### End-to-End Deployment Verification
+
+![Deployment Verification](docs/screenshots/deployment-verify.png)
+
+### AWS ECS Services
+
+![ECS Services Running](docs/screenshots/ecs-running.png)
 
 The AWS environment is not kept running continuously to avoid unnecessary cloud costs.
 
