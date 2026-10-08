@@ -29,31 +29,21 @@ The system includes:
 
 ## Architecture
 
-The platform uses a multi-service cloud architecture:
-
-- **User / Browser**
-  → Application Load Balancer
-
-- **Frontend**
-  → React + Nginx
-  → Runs as an ECS Fargate service
-
-- **Backend**
-  → Spring Boot
-  → Runs as an ECS Fargate service
-  → Connects to PostgreSQL on Amazon RDS
-
-- **AI Service**
-  → FastAPI
-  → RAG / handbook retrieval
-  → Agent / tool calling
-  → Communicates with backend APIs
-
-- **Amazon ECR**
-  → Stores Docker images for frontend, backend, and AI services
-
-- **Terraform**
-  → Provisions AWS infrastructure including VPC, ECS, ALB, ECR, and RDS
+```mermaid
+flowchart TD
+    U["User / Browser"] --> ALB["Application Load Balancer"]
+    ALB --> FE["Frontend - React + Nginx"]
+    ALB --> BE["Backend - Spring Boot"]
+    ALB --> AI["AI Service - FastAPI"]
+    BE --> DB["PostgreSQL / Amazon RDS"]
+    AI --> RAG["RAG / Handbook Retrieval"]
+    AI --> AGENT["Agent / Tool Calling"]
+    AGENT --> BE
+    ECR["Amazon ECR"] --> FE
+    ECR --> BE
+    ECR --> AI
+    TF["Terraform"] --> AWS["AWS Infrastructure"]
+```
 
 ---
 
