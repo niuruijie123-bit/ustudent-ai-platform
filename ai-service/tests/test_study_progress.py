@@ -56,3 +56,13 @@ def test_zero_credits():
 
     assert response.status_code == 200
     assert response.json()["remaining_credits"] == 120
+
+def test_exact_graduation_credits():
+    response = client.get(
+        "/study-progress",
+        params={"earned_credits": 120}
+    )
+
+    assert response.status_code == 200
+    assert response.json()["remaining_credits"] == 0
+    
