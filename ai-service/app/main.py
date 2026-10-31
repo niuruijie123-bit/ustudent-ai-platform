@@ -14,6 +14,8 @@ from app.routes import rag
 
 from app.routes import agent_chat
 
+from app.routes import study_progress
+
 app = FastAPI(
     title="ustudent AI service",
     version="0.1.0",
@@ -24,3 +26,4 @@ app.include_router(echo.router, tags=["echo"])
 app.include_router(can_graduate.router, tags=["lesson-3"])
 app.include_router(rag.router, tags=["rag"])
 app.include_router(agent_chat.router, tags=["agent"])
+app.include_router(study_progress.router, tags=["study-progress"])

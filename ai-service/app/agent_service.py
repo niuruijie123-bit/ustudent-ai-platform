@@ -47,7 +47,10 @@ def handbook_qa(question: str) -> str:
 def get_course(course_code: str) -> str:
     """Look up details for one course by code like CS101 or MATH201.
     Returns: name, credits, current/max enrolment, teacher."""
-    c = _find_course(course_code)
+    try:
+        c = _find_course(course_code)
+    except (httpx.RequestError, httpx.HTTPStatusError):
+        return "Course service temporarily unavailable."
     if c is None:
         return f"No course found with code {course_code}."
     return (f"{c['course_code']} — {c['course_name']}: {c['credits']} credits, "
@@ -58,7 +61,10 @@ def get_course(course_code: str) -> str:
 @tool
 def enrol(student_id: int, course_code: str) -> str:
     """Enrol a student in a course by code. Returns success or rejection reason."""
-    c = _find_course(course_code)
+    try:
+        c = _find_course(course_code)
+    except (httpx.RequestError, httpx.HTTPStatusError):
+        return "Enrolment unavaliable: backend service error."
     if c is None:
         return f"Cannot enrol — no course found with code {course_code}."
     try:
@@ -110,10 +116,16 @@ def run(message: str, thread_id: str) -> dict[str, Any]:
     messages = result["messages"]
     answer = messages[-1].content if messages else ""
 
+    last_user_index = max(
+        i for i, m in enumerate(messages)
+        if getattr(m, "type", None) == "human"
+)
+
+    current_messages = messages[last_user_index + 1:]
     # Pull this turn's tool calls + results out of the message trace.
     tool_calls: list[dict] = []
     pending: dict[str, dict] = {}
-    for m in messages:
+    for m in current_messages:
         for tc in getattr(m, "tool_calls", []) or []:
             pending[tc["id"]] = {"name": tc["name"], "args": tc["args"]}
         if getattr(m, "type", None) == "tool":

@@ -49,6 +49,9 @@ material below. If the material does not answer the question, reply with
 exactly: "I don't know based on the handbook."
 
 Do not invent facts. Do not use outside knowledge. Be concise.
+For course eligibility questions, explicitly list ALL prerequisite
+courses and enrolment rules supported by the material.
+Do not assume completed credits from year standing.
 
 ---- MATERIAL ----
 {context}
